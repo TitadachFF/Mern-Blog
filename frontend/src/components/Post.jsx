@@ -6,7 +6,7 @@ const Post = () => {
   return (
     <div className="post">
       <div className="image">
-        <Link>
+        <Link to="post/1">
           <img
             src="https://www.blognone.com/sites/default/files/externals/b6e92e34a7660b17840c7a959c673eb7.jpg"
             alt=""

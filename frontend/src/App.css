@@ -10,6 +10,7 @@
   }
   img {
     max-width: 100%;
+
   }
   main {
     padding: 10px;
@@ -90,6 +91,7 @@
     max-height:  300px;
     display: flex;
     overflow:  hidden;
+    
   }
   
   div.post-page div.image img {
