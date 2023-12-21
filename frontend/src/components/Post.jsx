@@ -1,6 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { UseContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
 
 const Post = () => {
   return (
@@ -16,7 +17,8 @@ const Post = () => {
       <div className="texts">
         <Link>
           <h2>
-          ไม่มีศัตรูถาวร Netflix ซื้อไลเซนส์รายการ Disney ชุดใหญ่ มี Grey’s Anatomy ด้วย
+            ไม่มีศัตรูถาวร Netflix ซื้อไลเซนส์รายการ Disney ชุดใหญ่ มี Grey’s
+            Anatomy ด้วย
           </h2>
         </Link>
         <p className="info">

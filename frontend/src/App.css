@@ -24,7 +24,8 @@
     margin-top: 20px;
     margin-bottom: 50px;
     align-items:  center;
-
+    
+  
   }
   
   header a {
@@ -44,8 +45,9 @@
     display: flex;
     gap: 24px;
     border-left: 4px solid rgb(88, 88, 88);
-    width: 150px;
+    width: 350px;
     height: 30px;
+    font-size: large ;
   }
   
   div.post{
@@ -98,6 +100,7 @@
     object-fit: cover;
     object-position: center center;
     width: 100%;
+    margin-top: 20px;
   }
   
   div.post-page a {
@@ -106,11 +109,11 @@
   
   }
   div.post-page h1 {
-    text-align: center;
+   
     margin: 10px 0 5px;
   }
   div.post-page time {
-    text-align: center;
+
     display: block;
     font-size: 1rem;
     color: #aaa;
@@ -120,9 +123,10 @@
   
   div.post-page div.author {
     text-align: center;
-    margin-bottom: 20px;
+   
     font-size: 0.7rem;
     font-weight: bold;
+ 
   
   }
   div.post-page p {
