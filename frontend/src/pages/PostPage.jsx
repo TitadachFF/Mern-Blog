@@ -1,27 +1,56 @@
-import React from "react";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { format } from "date-fns";
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const PostPage = () => {
+  const [postInfo, setPostInfo] = useState(null);
+  const {userInfo} = useContext(UserContext);
+  const { id } = useParams();
+  useEffect(() => {
+    fetch(`${baseURL}/post/${id}`).then((response) => {
+      response.json().then((postInfo) => {
+        setPostInfo(postInfo);
+      });
+    });
+  }, [id]);
+  if (!postInfo) return "";
   return (
     <div className="post-page">
-      <h1>
-        {""}
-        ไม่มีศัตรูถาวร Netflix ซื้อไลเซนส์รายการ Disney ชุดใหญ่ มี Grey’s
-        Anatomy ด้วย
-      </h1>
-      <time>13 December 2023 - 11:26</time>
-      <a href="" className="author">@Titadach</a>
+      <h1>{postInfo.title}</h1>
+      <time>{format(new Date(postInfo.createdAt), "dd MMMM yyyy HH:MM")}</time>
+      <div className="author">By @ {postInfo.author.username}</div>
+      {userInfo?.id === postInfo.author._id && (
+        <div className="edit-row">
+          <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
+            <svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                />
+              </svg>
+            </svg>
+            Edit this post
+          </Link>
+        </div>
+      )}
       <div className="image">
-        <img
-          src="https://www.blognone.com/sites/default/files/externals/b6e92e34a7660b17840c7a959c673eb7.jpg"
-          alt=""
-        />
+        <img src={`${baseURL}/${postInfo.cover}`} alt="" />
       </div>
-      <p className="content">
-        ถึงแม้เป็นคู่แข่งกันโดยตรงในวงการสตรีมมิ่ง
-        แต่เมื่อรายการไม่ได้ซ้อนทับกัน ดีลธุรกิจก็เกิดขึ้นได้เสมอ ล่าสุด Netflix
-        เซ็นสัญญากับ Disney ซื้อไลเซนส์รายการในเครือ Disney รวม 14 รายการไปฉายบน
-        Netflix ตามกรอบเวลา 18 เดือน
-      </p>
+      <div
+        className="content"
+        dangerouslySetInnerHTML={{ __html: postInfo.content }}
+      ></div>
     </div>
   );
 };

@@ -1,38 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { UseContext, useEffect } from 'react'
-import { UserContext } from '../context/UserContext'
+import React from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+const baseURL = import.meta.env.VITE_BASE_URL;
 
-const Post = () => {
+const Post = ({_id, cover, title, author, createdAt, summary }) => {
+  console.log(cover, author);
   return (
     <div className="post">
       <div className="image">
-        <Link to="post/1">
-          <img
-            src="https://www.blognone.com/sites/default/files/externals/b6e92e34a7660b17840c7a959c673eb7.jpg"
-            alt=""
-          />
+        <Link to={`/post/${_id}`} >
+          <img src={`${baseURL}/${cover}`} alt="" />
         </Link>
       </div>
       <div className="texts">
-        <Link>
-          <h2>
-            ไม่มีศัตรูถาวร Netflix ซื้อไลเซนส์รายการ Disney ชุดใหญ่ มี Grey’s
-            Anatomy ด้วย
-          </h2>
+        <Link to={`/post/${_id}`}>
+          <h2>{title}</h2>
         </Link>
         <p className="info">
-          <a href="" className="author">
-            Titadach
+          <a className="author">
+            {author.username}
           </a>
-          <time>13 December 2023 - 11:26</time>
+          <time>{format(new Date(createdAt), "dd MMMM yyyy HH:MM")}</time>
         </p>
-        <p className="summary">
-          ถึงแม้เป็นคู่แข่งกันโดยตรงในวงการสตรีมมิ่ง
-          แต่เมื่อรายการไม่ได้ซ้อนทับกัน ดีลธุรกิจก็เกิดขึ้นได้เสมอ ล่าสุด
-          Netflix เซ็นสัญญากับ Disney ซื้อไลเซนส์รายการในเครือ Disney รวม 14
-          รายการไปฉายบน Netflix ตามกรอบเวลา 18 เดือน
-        </p>
+        <p className="summary">{summary}</p>
       </div>
     </div>
   );
