@@ -102,15 +102,18 @@ app.get("/post/:id", async (req, res) => {
   const postDoc = await Post.findById(id).populate("author", ["username"]);
   res.json(postDoc);
 });
+
+//Update
 app.put("/post/:id", uploadMiddleware.single("file"), async (req, res) => {
   let newPath = null;
   if (req.file) {
     const { originalname, path } = req.file;
     const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
+    newPath = path + "." + ext;
     fs.renameSync(path, newPath);
   }
+
   const { token } = req.cookies;
   jwt.verify(token, secret, async (err, info) => {
     if (err) throw err;
@@ -118,17 +121,37 @@ app.put("/post/:id", uploadMiddleware.single("file"), async (req, res) => {
     const postDoc = await Post.findById(id);
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
     if (!isAuthor) {
-      return res.status(400).json("You are not author");
+      return res.status(400).json("You are not the author");
     }
-    postDoc.updateOne({
-      title,
-      summary,
-      content,
-      cover: newPath ? newPath : postDoc.cover,
+
+    await postDoc.updateOne({
+      $set: {
+        title,
+        summary,
+        content,
+        cover: newPath ? newPath : postDoc.cover,
+      },
     });
 
-  res.json(postDoc);
+    res.json(postDoc);
+  });
 });
+//Delete
+app.delete("/post/:id", async (req, res) => {
+  const { id } = req.params;
+  const { token } = req.cookies;
+  jwt.verify(token, secret, async (err, info) => {
+    if (err) throw err;
+    const postDoc = await Post.findById(id);
+    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(400).json("You are not the author");
+    }
+
+    await postDoc.remove();
+
+    res.json("Post deleted successfully");
+  });
 });
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
